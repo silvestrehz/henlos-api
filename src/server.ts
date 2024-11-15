@@ -2,6 +2,7 @@ import express, { Express, Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { connectDatabase } from './config/database';
+import quoteRoutes from './routes/quote.routes';
 
 dotenv.config();
 
@@ -10,6 +11,7 @@ const app: Express = express();
 app.use(cors());
 app.use(express.json());
 
+app.use('/api', quoteRoutes);
 
 connectDatabase()
     .then(() => {
