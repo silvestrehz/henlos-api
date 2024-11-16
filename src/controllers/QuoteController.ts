@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import Quote from '../models/Quote';
 import { CreateQuoteDTO, UpdateQuoteDTO } from '../types/quote.types';
-import { WhatsAppService } from '../services/WhatsappService'
+import { WhatsAppService } from '../services/WhatsAppService'
 
 export class QuoteController {
     async create(req: Request<{}, {}, CreateQuoteDTO>, res: Response) {
