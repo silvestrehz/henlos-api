@@ -21,7 +21,7 @@ API RESTful para sistema de orçamentos via WhatsApp.
 1. Clone o repositório
 
 ```bash
-git clone https://github.com/seu-usuario/henlos-api.git
+git clone https://github.com/silvestrehz/henlos-api.git
 cd henlos-api
 ```
 
