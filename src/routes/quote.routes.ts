@@ -10,6 +10,7 @@ const quoteController = new QuoteController();
 router.post('/quotes', createQuoteValidator, validate, quoteController.create);
 router.get('/quotes', quoteController.getAll);
 router.get('/quotes/:id', quoteController.getById);
+router.get('/quotes/:id/send', quoteController.sendToWhatsApp);
 router.put('/quotes/:id', updateQuoteValidator, validate, quoteController.update);
 router.delete('/quotes/:id', quoteController.delete);
 

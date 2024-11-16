@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import Quote from '../models/Quote';
 import { CreateQuoteDTO, UpdateQuoteDTO } from '../types/quote.types';
+import { WhatsAppService } from '../services/WhatsappService'
 
 export class QuoteController {
     async create(req: Request<{}, {}, CreateQuoteDTO>, res: Response) {
@@ -23,14 +24,44 @@ export class QuoteController {
                 total: items.reduce((sum, item) => sum + (item.price * item.quantity), 0)
             });
 
+
+            const formattedMessage = WhatsAppService.formatMessage(quote);
+            const whatsappLink = WhatsAppService.generateWhatsAppLink(
+                quote.clientPhone,
+                formattedMessage
+            );
+
             console.log('Quote criado:', quote);
-            return res.status(201).json(quote);
+            return res.status(201).json({
+                quote,
+                whatsappLink,
+                formattedMessage
+            });
         } catch (error) {
             console.error('Erro detalhado:', error);
             return res.status(400).json({
                 error: 'Erro ao criar orçamento',
                 details: error instanceof Error ? error.message : String(error)
             });
+        }
+    }
+
+    async sendToWhatsApp(req: Request, res: Response) {
+        try {
+            const quote = await Quote.findById(req.params.id);
+            if (!quote) {
+                return res.status(404).json({ error: 'Orçamento não encontrado' });
+            }
+
+            const message = WhatsAppService.formatMessage(quote);
+            const whatsappLink = WhatsAppService.generateWhatsAppLink(
+                quote.clientPhone,
+                message
+            );
+
+            return res.redirect(whatsappLink);
+        } catch (error) {
+            return res.status(500).json({ error: 'Erro ao redirecionar para WhatsApp' });
         }
     }
 
